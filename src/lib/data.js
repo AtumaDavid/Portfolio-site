@@ -17,7 +17,7 @@ export const profile = {
   // Email sending: leave web3formsKey null to use the visitor's mail app (mailto).
   // For in-page sending without leaving the site, create a free key at web3forms.com
   // and paste it here.
-  web3formsKey: null,
+  web3formsKey: 'f01fa0cd-d455-4094-bed5-25b957d81e76',
   // Optional: paste a Calendly URL to use it instead of the built-in scheduler.
   calendlyUrl: 'https://calendly.com/atumadavid35/30min',
   thesis:
