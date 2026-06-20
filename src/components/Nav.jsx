@@ -6,7 +6,7 @@ import { useUI } from '../lib/ui';
 
 const items = [
   { label: 'Work', id: 'work' },
-  { label: 'Projects', id: 'projects' },
+  // { label: 'Projects', id: 'projects' },
   { label: 'Stack', id: 'stack' },
   { label: 'Contact', id: 'contact' },
 ];
