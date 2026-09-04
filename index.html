@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Atuma David — Software Engineer. Full-stack systems, APIs and cloud infrastructure." />
+    <meta
+      name="description"
+      content="Atuma David — Software Engineer. Full-stack systems, APIs and cloud infrastructure."
+    />
     <meta name="theme-color" content="#000000" />
     <title>Atuma David</title>
     <script>
@@ -12,15 +15,37 @@
           var t = localStorage.getItem('theme');
           if (!t) t = 'dark';
           document.documentElement.setAttribute('data-theme', t);
-        } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
       })();
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- <script>
+      window.OMNIBRAIN_ID =
+        'ob_live_462389e0ddf1e18d1c966a7e39f215988da8a79dd7467c0419e7e79d041f76f6';
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'http://localhost:3000/widget.js';Password123
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'omnibrain-sdk');
+    </script> -->
   </body>
 </html>

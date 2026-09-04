@@ -208,23 +208,20 @@ function Detail({ job, onClose }) {
                 {job.products.map((p) => {
                   const body = (
                     <div
-                      className="glass"
+                      className="glass prod-card"
                       style={{
                         borderRadius: 16,
                         padding: '0.9rem 1.1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        gap: '1rem',
                       }}
                     >
-                      <div>
+                      <div style={{ minWidth: 0 }}>
                         <div
                           style={{
                             fontWeight: 600,
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.4rem',
+                            flexWrap: 'wrap',
                             color: p.link ? 'var(--accent)' : 'var(--text)',
                           }}
                         >
@@ -233,12 +230,19 @@ function Detail({ job, onClose }) {
                         </div>
                         <div
                           className="muted"
-                          style={{ fontSize: '0.85rem', marginTop: '0.15rem' }}
+                          style={{
+                            fontSize: '0.85rem',
+                            marginTop: '0.15rem',
+                            lineHeight: 1.45,
+                          }}
                         >
                           {p.note}
                         </div>
                       </div>
-                      <span className="label" style={{ flexShrink: 0 }}>
+                      <span
+                        className="label prod-tag"
+                        style={{ flexShrink: 0 }}
+                      >
                         {p.metric || p.tag}
                       </span>
                     </div>
