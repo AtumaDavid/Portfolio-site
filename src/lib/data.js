@@ -94,8 +94,8 @@ export const work = [
     role: 'Web Developer',
     company: 'Big Web Labs',
     // site: 'https://bigweblabs.com/',
-    period: '2026 — Present',
-    mode: 'Remote',
+    period: '2026',
+    mode: 'Contract | Remote',
     summary:
       'Build and maintain client websites across multiple platforms, matching each project to the right tool.',
     points: [
