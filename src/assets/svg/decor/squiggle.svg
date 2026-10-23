@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="20" viewBox="0 0 140 20" fill="none">
+  <!-- Wavy underline. Used as a CSS mask; colour comes from the page. -->
+  <path d="M2 12c8-9 15-9 22 0s15 9 22 0 15-9 22 0 15 9 22 0 15-9 22 0 15 9 22 0" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+</svg>

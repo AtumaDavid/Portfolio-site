@@ -1,0 +1,68 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens. Palette: "electric green + ink", with coral,
+   butter and sky as supporting sticker colours. Light theme on
+   :root, dark overrides on [data-theme='dark']. Every text/background
+   pair is checked for WCAG AA. JS mirror: src/lib/brand.js
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --bg: #fff8f2;
+  --bg-2: #f8efe4;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --text-2: #57534e;
+  --text-3: #8a847c;
+  --line: rgba(26, 26, 26, 0.1);
+  --line-2: rgba(26, 26, 26, 0.2);
+  --accent: #08773f; /* green that passes as text on cream */
+  --danger: #b42318;
+
+  /* Signature + supporting colours (always paired with --on-color text) */
+  --green: #22d37a;
+  --ink: #0f1b2d;
+  --coral: #ff7a66;
+  --butter: #ffd84d;
+  --sky: #9ad8ff;
+  --on-color: #0f1b2d;
+  --on-ink: #fff8f2;
+  --cream: #fff8f2; /* fixed, not themed */
+  --band-ink: var(--ink);
+
+  --shadow: 0 18px 40px -22px rgba(15, 27, 45, 0.35), 0 2px 6px -2px rgba(15, 27, 45, 0.08);
+  --shadow-lift: 0 26px 50px -24px rgba(15, 27, 45, 0.45), 0 4px 10px -4px rgba(15, 27, 45, 0.1);
+
+  --r-sm: 14px;
+  --r: 24px;
+  --r-lg: 32px;
+  --pill: 980px;
+
+  --font: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo, monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --maxw: 1160px;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #0e1726;
+  --bg-2: #132036;
+  --card: #18263d;
+  --text: #fff8f2;
+  --text-2: #b8c2d1;
+  --text-3: #7d8a9c;
+  --line: rgba(255, 248, 242, 0.1);
+  --line-2: rgba(255, 248, 242, 0.22);
+  --accent: #3ee28f;
+  --danger: #ff8a78;
+
+  --green: #2ee086;
+  --coral: #ff8a78;
+  --butter: #ffdc5e;
+  --sky: #a6dcff;
+  --band-ink: #070d18;
+
+  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 26px 50px -20px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}

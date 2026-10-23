@@ -1,156 +1,60 @@
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { X, Download, ExternalLink } from 'lucide-react';
-import { profile } from '../lib/data';
+import { Download, ExternalLink } from 'lucide-react';
+import { profile } from '../../lib/data';
 import PdfViewer from './PdfViewer';
-import { useLenisCtx } from '../lib/lenis';
+import Modal, { ModalHeader } from './Modal';
+import Note from '../ui/Note';
+import { COLORS } from '../../lib/brand';
+
+const pop = (delay) => ({
+  initial: { scale: 0, rotate: -15 },
+  animate: { scale: 1, rotate: 0 },
+  whileHover: { y: -2, rotate: -3 },
+  whileTap: { scale: 0.94 },
+  transition: { type: 'spring', stiffness: 320, damping: 14, delay },
+});
 
 export default function CVModal({ onClose }) {
-  const scrollRef = useRef(null);
-  const { stop, start } = useLenisCtx();
-
-  useEffect(() => {
-    stop();
-    const onKey = (e) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
-    return () => {
-      start();
-      window.removeEventListener('keydown', onKey);
-    };
-  }, []);
-
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 1500,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 'clamp(1rem,4vw,2.5rem)',
-      }}
-    >
-      {/* Backdrop */}
-      <motion.div
-        onClick={onClose}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35 }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'color-mix(in srgb, var(--bg) 40%, transparent)',
-          backdropFilter: 'blur(24px) saturate(140%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(140%)',
-        }}
-      />
-
-      {/* Modal card */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 24 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.94, y: 16 }}
-        transition={{ type: 'spring', stiffness: 240, damping: 26 }}
-        className="glass"
-        style={{
-          position: 'relative',
-          width: 'min(820px, 100%)',
-          height: 'min(88vh, 1000px)',
-          borderRadius: 24,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '1rem 1.25rem',
-            borderBottom: '1px solid var(--line)',
-            flexShrink: 0,
-            background: 'var(--glass-bg)',
-            zIndex: 1,
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>Curriculum Vitae</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <a
+    <Modal
+      onClose={onClose}
+      maxWidth={840}
+      height="min(90vh, 1000px)"
+      blob="var(--sky)"
+      label="Curriculum vitae"
+      header={
+        <ModalHeader fill="fill-sky">
+          <Note color="var(--on-color)" play arrow={false} style={{ marginBottom: '0.3rem' }}>
+            the paper version 📄
+          </Note>
+          <h2>My CV</h2>
+          <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+            <motion.a {...pop(0.25)} href={profile.cvPath} download className="sticker" style={{ background: COLORS.cream, minHeight: 44 }}>
+              <Download size={16} /> Download PDF
+            </motion.a>
+            <motion.a
+              {...pop(0.32)}
               href={profile.cvPath}
               target="_blank"
               rel="noreferrer"
-              data-no-preview
-              aria-label="Open in new tab"
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: '50%',
-                border: '1px solid var(--line-2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--text-2)',
-              }}
+             
+              className="sticker fill-green"
+              style={{ minHeight: 44 }}
             >
-              <ExternalLink size={16} />
-            </a>
-            <a
-              href={profile.cvPath}
-              download
-              data-no-preview
-              aria-label="Download"
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: '50%',
-                border: '1px solid var(--line-2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--text-2)',
-              }}
-            >
-              <Download size={16} />
-            </a>
-            <button
-              onClick={onClose}
-              aria-label="Close"
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: '50%',
-                border: 'none',
-                cursor: 'pointer',
-                background: 'color-mix(in srgb, var(--text) 82%, transparent)',
-                color: 'var(--bg)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <X size={16} />
-            </button>
+              <ExternalLink size={16} /> Open in new tab
+            </motion.a>
           </div>
-        </div>
-
-        {/* Scrollable content */}
-        <div
-          ref={scrollRef}
-          className="scroll-area"
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflow: 'auto',
-            background: 'transparent',
-          }}
-        >
-          <PdfViewer url={profile.cvPath} />
-        </div>
+        </ModalHeader>
+      }
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 24 }}
+        style={{ background: 'var(--bg-2)', minHeight: '100%' }}
+      >
+        <PdfViewer url={profile.cvPath} />
       </motion.div>
-    </div>
+    </Modal>
   );
 }

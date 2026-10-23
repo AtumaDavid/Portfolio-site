@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Caveat:wght@700&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0f1b2d; color: #fff8f2; font-family: 'DM Sans', sans-serif; position: relative; }
+  .blob { position: absolute; }
+  .left { position: absolute; left: 80px; top: 64px; width: 640px; }
+  .note { font-family: 'Caveat', cursive; font-size: 44px; color: #2ee086; transform: rotate(-3deg); transform-origin: left bottom; display: inline-flex; align-items: flex-start; gap: 4px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 86px; line-height: 0.98; letter-spacing: -0.04em; margin-top: 14px; }
+  .mark { position: relative; white-space: nowrap; z-index: 0; }
+  .mark::before { content: ''; position: absolute; left: -6px; right: -6px; bottom: 6px; height: 40px; background: #22d37a; opacity: .5; border-radius: 10px; transform: rotate(-1.5deg); z-index: -1; }
+  .sub { margin-top: 24px; font-size: 27px; color: #b8c2d1; line-height: 1.35; }
+  .sub b { color: #fff8f2; font-weight: 700; }
+  .art { position: absolute; right: 96px; top: 98px; width: 300px; height: 375px; }
+  .back { position: absolute; inset: 22px -22px -20px 30px; background: #ffd84d; border-radius: 34px; transform: rotate(6deg); }
+  .card { position: absolute; inset: 0; background: #22d37a; border-radius: 70px 36px 90px 40px / 50px 80px 40px 96px; transform: rotate(-3deg); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .card .c1 { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: #9ad8ff; opacity: .75; top: -70px; right: -60px; }
+  .card .c2 { position: absolute; width: 240px; height: 240px; border-radius: 50%; background: #ffd84d; opacity: .85; bottom: -110px; left: -90px; }
+  .card svg { position: relative; width: 200px; }
+  .chip { position: absolute; font-weight: 700; font-size: 21px; padding: 12px 20px; border-radius: 999px; color: #0f1b2d; border: 2.5px solid #0f1b2d; box-shadow: 3px 4px 0 #0f1b2d; white-space: nowrap; }
+  .url { position: absolute; left: 80px; bottom: 40px; font-size: 22px; font-weight: 700; color: #fff8f2; display: flex; align-items: center; gap: 14px; }
+  .url img { width: 40px; height: 40px; }
+  .dots { position: absolute; right: 52px; bottom: 40px; }
+</style>
+</head>
+<body>
+  <svg class="blob" width="520" height="520" viewBox="0 0 200 200" style="right:-170px;top:-200px"><path fill="rgba(46,224,134,0.13)" d="M157 101c3 22-8 46-31 55-24 9-44 3-64-11-19-15-25-35-20-58 5-24 22-40 46-43 25-3 44 6 56 21 9 11 12 23 13 36Z"/></svg>
+  <svg class="blob" width="380" height="380" viewBox="0 0 200 200" style="left:-160px;bottom:-200px"><path fill="rgba(255,216,77,0.09)" d="M157 101c3 22-8 46-31 55-24 9-44 3-64-11-19-15-25-35-20-58 5-24 22-40 46-43 25-3 44 6 56 21 9 11 12 23 13 36Z"/></svg>
+
+  <div class="left">
+    <div class="note">👋 hey! I'm Atuma David
+      <svg width="52" height="38" viewBox="0 0 52 38" fill="none" style="margin-top:22px"><path d="M3 5c14-4 30 0 36 10s2 16 0 19" stroke="#2ee086" stroke-width="2.8" stroke-linecap="round"/><path d="m32 28 7 7 6-8" stroke="#2ee086" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1>I build software you can <span class="mark">count on.</span></h1>
+    <p class="sub"><b>Full-stack software engineer</b> in Lagos.<br>Web apps, APIs, cloud & product delivery.</p>
+  </div>
+
+  <div class="art">
+    <div class="back"></div>
+    <div class="card">
+      <div class="c1"></div><div class="c2"></div>
+      <svg viewBox="8 16 50 32"><path fill="#0f1b2d" fill-rule="evenodd" d="M9 47 18.4 17h8.4l9.4 30h-7.4l-1.7-5.8h-9l-1.7 5.8H9Zm11.6-12h5.8l-2.9-10-2.9 10ZM37.6 17h7.6C52.4 17 57 22.6 57 32s-4.6 15-11.8 15h-7.6V17Zm7 6.4v17.2h.6c3.6 0 5-3.2 5-8.6s-1.4-8.6-5-8.6h-.6Z"/></svg>
+    </div>
+    <div class="chip" style="background:#22d37a;top:-22px;left:-62px;transform:rotate(-5deg)">✓ Available for projects</div>
+    <div class="chip" style="background:#fff8f2;bottom:-20px;right:-40px;transform:rotate(3deg)">Lead Software Engineer @ Shecluded</div>
+  </div>
+
+  <div class="url"><img src="../src/assets/svg/brand/logo.svg">Atuma David · Book a call</div>
+  <svg class="dots" width="90" height="48" aria-hidden="true">
+    <g fill="rgba(255,248,242,0.22)">
+      <circle cx="3" cy="3" r="3"/><circle cx="17" cy="3" r="3"/><circle cx="31" cy="3" r="3"/><circle cx="45" cy="3" r="3"/><circle cx="59" cy="3" r="3"/><circle cx="73" cy="3" r="3"/><circle cx="87" cy="3" r="3"/>
+      <circle cx="3" cy="17" r="3"/><circle cx="17" cy="17" r="3"/><circle cx="31" cy="17" r="3"/><circle cx="45" cy="17" r="3"/><circle cx="59" cy="17" r="3"/><circle cx="73" cy="17" r="3"/><circle cx="87" cy="17" r="3"/>
+      <circle cx="3" cy="31" r="3"/><circle cx="17" cy="31" r="3"/><circle cx="31" cy="31" r="3"/><circle cx="45" cy="31" r="3"/><circle cx="59" cy="31" r="3"/><circle cx="73" cy="31" r="3"/><circle cx="87" cy="31" r="3"/>
+      <circle cx="3" cy="45" r="3"/><circle cx="17" cy="45" r="3"/><circle cx="31" cy="45" r="3"/><circle cx="45" cy="45" r="3"/><circle cx="59" cy="45" r="3"/><circle cx="73" cy="45" r="3"/><circle cx="87" cy="45" r="3"/>
+    </g>
+  </svg>
+</body>
+</html>

@@ -1,0 +1,400 @@
+/* Layout for specific page sections */
+
+/* ── Hero ── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 7rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2.5rem;
+  }
+}
+.hero-art {
+  position: relative;
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+}
+.hero-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 2px solid var(--on-color);
+  box-shadow: 6px 8px 0 var(--on-color);
+}
+[data-theme='dark'] .hero-frame {
+  border-color: transparent;
+  box-shadow: var(--shadow-lift);
+}
+.hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-backdrop {
+  position: absolute;
+  inset: 6% -6% -5% 8%;
+  border-radius: var(--r-lg);
+  background: var(--butter);
+  transform: rotate(5deg);
+  z-index: -1;
+}
+.float-card {
+  position: absolute;
+  z-index: 2;
+}
+.float-card > * {
+  transform: rotate(var(--rot, 0deg));
+}
+/* On small screens the floating cards stack and straighten */
+@media (max-width: 899px) {
+  .hero-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 1.4rem;
+  }
+  .float-card {
+    position: static;
+  }
+  .float-card > * {
+    transform: none;
+  }
+}
+
+/* ── Grids ── */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1.4rem;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+@media (min-width: 700px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .grid-3 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+/* ── Toolbox (About) ── */
+.toolbox {
+  padding: clamp(1.3rem, 4vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+.toolbox-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.toolbox-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.4rem 0.45rem 0.4rem 0.9rem;
+  border-radius: var(--pill);
+  border: 2px solid var(--line-2);
+  box-shadow: 2px 3px 0 var(--line-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.toolbox-tab:not(.is-active) {
+  background: var(--bg);
+}
+.toolbox-tab:not(.is-active):hover {
+  border-color: var(--text);
+  box-shadow: 3px 5px 0 var(--text);
+}
+.toolbox-tab.is-active {
+  border-color: var(--on-color);
+  box-shadow: 1px 1px 0 var(--on-color); /* pressed in */
+  color: var(--on-color);
+}
+/* Little count bubble: "there's stuff inside" */
+.toolbox-count {
+  min-width: 26px;
+  height: 26px;
+  padding: 0 0.35rem;
+  border-radius: var(--pill);
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+}
+.toolbox-tab.is-active .toolbox-count {
+  background: var(--on-color);
+  color: #fff8f2;
+}
+.toolbox-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+  min-height: 44px;
+  padding: 0.4rem 1rem;
+  border-radius: var(--pill);
+  border: 2px solid var(--on-color);
+  background: var(--on-color);
+  color: #fff8f2;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.toolbox-drawer {
+  border-radius: var(--r);
+  border: 2px solid var(--on-color);
+  padding: clamp(1.1rem, 3.5vw, 1.6rem);
+  min-height: 170px;
+  overflow: hidden;
+}
+.toolbox-creds {
+  display: grid;
+  gap: 1.2rem;
+  padding-top: 1.2rem;
+  border-top: 1.5px dashed var(--line-2);
+}
+.toolbox-badge {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 2px solid var(--on-color);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+/* ── Work cards ── */
+.work-card {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font: inherit;
+  color: inherit;
+}
+.work-card:hover {
+  box-shadow: var(--shadow-lift);
+}
+
+/* ── Shipped-product cards (Work detail) ── */
+.prod-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 0.95rem 1.15rem;
+  transition:
+    transform 0.3s var(--bounce),
+    border-color 0.2s;
+}
+a:hover > .prod-card {
+  transform: translateY(-2px) rotate(-0.4deg);
+  border-color: var(--accent);
+}
+.prod-card > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.prod-tag {
+  flex-shrink: 0;
+  max-width: 44%;
+  text-align: right;
+  white-space: normal;
+}
+@media (max-width: 600px) {
+  .prod-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .prod-tag {
+    max-width: 100%;
+    text-align: left;
+  }
+}
+
+
+/* ── Process: the rocket road ── */
+.road {
+  position: relative;
+}
+.road-svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.road-base,
+.road-trail {
+  fill: none;
+  stroke-linecap: round;
+}
+.road-base {
+  stroke: var(--line-2);
+  stroke-width: 4;
+  stroke-dasharray: 1 12;
+}
+.road-trail {
+  stroke: var(--green);
+  stroke-width: 6;
+}
+/* Zero-size anchor sitting on the road; the emoji is centred on it */
+.road-rocket {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.road-rocket span {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 2.1rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(15, 27, 45, 0.3));
+}
+.road-steps {
+  list-style: none;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1.6rem;
+}
+.road-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.road-badge {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  border: 2px dashed var(--line-2);
+  color: var(--text-2);
+}
+.road-badge:not(.is-on) {
+  background: var(--bg);
+}
+.road-badge.is-on {
+  border: 2px solid var(--on-color);
+  box-shadow: 3px 4px 0 var(--on-color);
+  color: var(--on-color);
+  font-size: 1.9rem;
+}
+.road-badge-num {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font);
+  font-size: 0.75rem;
+  background: var(--on-color);
+  color: var(--cream);
+}
+.road-card {
+  flex: 1;
+  border-radius: var(--r);
+  padding: 1.15rem 1.3rem 1.25rem;
+  border: 2px solid var(--line-2);
+}
+.road-card:not([class*='fill-']) {
+  background: var(--card);
+}
+.road-card[class*='fill-'] {
+  border-color: var(--on-color);
+  box-shadow: 4px 5px 0 var(--on-color);
+}
+.road-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.4rem;
+}
+.road-card p {
+  color: var(--text-2);
+}
+.road-card[class*='fill-'] p {
+  color: var(--on-color);
+  opacity: 0.85;
+}
+@media (min-width: 900px) {
+  .road-steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.4rem;
+  }
+  .road-step {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+  }
+  /* zig-zag so the road winds */
+  .road-step.is-low {
+    margin-top: 5.5rem;
+  }
+  .road-card {
+    width: 100%;
+  }
+}

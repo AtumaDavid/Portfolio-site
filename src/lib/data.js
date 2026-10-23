@@ -1,9 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 //  EDIT YOUR INFO HERE — the whole site reads from this one file.
 //
-//  IMAGES (optional): drop files into  public/images/  and set the
-//  `image` field to e.g. '/images/shecluded.png'. Leave it null and a
-//  tasteful placeholder shows instead — add images whenever you like.
+//  IMAGES (optional): drop your photo into  public/images/  and set
+//  `profile.photo` to e.g. '/images/me.jpg'. Leave it null and a
+//  monogram card shows instead.
 // ─────────────────────────────────────────────────────────────
 
 export const profile = {
@@ -13,6 +13,10 @@ export const profile = {
   email: 'atumadavid35@gmail.com',
   phone: '+234 913 443 8062',
   available: true,
+  timeZone: 'Africa/Lagos',
+  // Your photo: drop it in public/images/ and set e.g. '/images/me.jpg'.
+  // While null, the hero shows a monogram card instead.
+  photo: null,
   cvPath: '/Atuma-David-CV.pdf',
   // Email sending: leave web3formsKey null to use the visitor's mail app (mailto).
   // For in-page sending without leaving the site, create a free key at web3forms.com
@@ -24,14 +28,80 @@ export const profile = {
     'I build dependable full-stack systems — from the APIs and databases at the core to the cloud they run on. Currently leading engineering at a fintech building accessible lending for women.',
   links: {
     github: 'https://github.com/AtumaDavid',
-    linkedin: 'https://www.linkedin.com/', // ← paste your LinkedIn URL
-    medium: 'https://medium.com/', // ← paste your Medium URL
+    linkedin: null, // ← paste your LinkedIn URL (hidden while null)
+    medium: null, // ← paste your Medium URL (hidden while null)
   },
+  // Short human story for the About section. Keep it true.
+  story: [
+    'I studied Biochemistry at FUTA, then found my way into software. Since then I have built for fintech, healthcare, crowdfunding and food startups, mostly remotely, for teams from Lagos to Dubai.',
+    'Today I lead engineering at Shecluded, where we are making credit easier to reach for women entrepreneurs. I care about software that is calm to use and calm to run.',
+  ],
+  // Little personality stickers. Only real things!
+  stickers: [
+    { emoji: '📍', text: 'Lagos, Nigeria' },
+    { emoji: '🧪', text: 'Biochem grad turned engineer' },
+    { emoji: '🌍', text: 'Happy working remote' },
+    { emoji: '🧭', text: 'Leads teams, still writes code' },
+  ],
 };
+
+// ── SERVICES: "What I do" cards on the home page ──
+// `icon` picks the mini illustration: 'web' | 'api' | 'plan' | 'cloud'
+export const services = [
+  {
+    icon: 'web',
+    title: 'Web apps & websites',
+    body: 'Fast, accessible interfaces in React and Next.js. Or a quick Shopify, Wix, Carrd or Google Sites build when that is the better fit for you.',
+  },
+  {
+    icon: 'api',
+    title: 'APIs & backends',
+    body: 'Secure, well-organised services in Node, Nest.js and Express on PostgreSQL or MongoDB. Auth, roles and payments included.',
+  },
+  {
+    icon: 'plan',
+    title: 'Product & project management',
+    body: 'I can run the project as well as build it: shaping scope and roadmaps, running Agile sprints and keeping everyone in the loop.',
+  },
+  {
+    icon: 'cloud',
+    title: 'Cloud & DevOps',
+    body: 'AWS, Docker, Nginx and CI/CD pipelines, so releasing is boring in the best way. At Shecluded this cut deploy time by ~80%.',
+  },
+];
+
+// ── PROCESS: "How I work" steps (the rocket road). `emoji` shows once reached ──
+export const steps = [
+  {
+    emoji: '👂',
+    title: 'Listen',
+    body: 'We talk through the problem, the people using it and what "done" looks like.',
+  },
+  {
+    emoji: '✏️',
+    title: 'Plan',
+    body: 'I map the data, the APIs and the screens, and we agree on scope before any code.',
+  },
+  {
+    emoji: '🛠️',
+    title: 'Build',
+    body: 'Small, reviewable releases you can click through as we go. No big-bang surprises.',
+  },
+  {
+    emoji: '📦',
+    title: 'Ship & support',
+    body: 'Automated deploys and a clean handover, with support after launch if you need it.',
+  },
+];
+
+// ── TESTIMONIALS: real quotes only. The section stays hidden while empty. ──
+// { quote: '...', name: 'Jane Doe', role: 'CTO, Company', photo: '/images/jane.jpg' }
+export const testimonials = [];
 
 // ── WORK: companies you've worked for (the headline of the site) ──
 // Each role can list the products you shipped there, with a live link
-// and an optional screenshot.
+// and an optional screenshot. When only some of it can be shown publicly,
+// set `shippedLabel` (text on the card) and `moreShipped` (a note in the details).
 export const work = [
   {
     role: 'Lead Software Engineer',
@@ -96,19 +166,21 @@ export const work = [
     // site: 'https://bigweblabs.com/',
     period: '2026',
     mode: 'Contract | Remote',
+    shippedLabel: 'Various projects shipped',
+    moreShipped: "Plus various other client projects I've shipped that aren't available to show publicly.",
     summary:
       'Build and maintain client websites across multiple platforms, matching each project to the right tool.',
     points: [
-      'Build and ship client websites using Wix, WordPress, Shopify and Google Sites, selecting the right platform for each project.',
+      'Build and ship client websites using Shopify, Google Sites, Wix and Carrd, selecting the right platform for each project.',
       'Design responsive, SEO-friendly layouts with structured content and third-party integrations.',
       'Set up e-commerce storefronts and configure payments, products and shipping on Shopify.',
       'Hand off maintainable sites to clients and provide ongoing updates and support.',
     ],
     stack: [
-      'WordPress',
       'Shopify',
-      'Wix',
       'Google Sites',
+      'Wix',
+      'Carrd',
       'HTML',
       'CSS',
       'SEO',
@@ -233,66 +305,16 @@ export const work = [
   },
 ];
 
-// ── PERSONAL PROJECTS: independent builds, separate from client work ──
-// Add as many as you like — copy a block and edit it.
-export const projects = [
-  {
-    id: 'acquisitions-api',
-    title: 'Acquisitions API',
-    kind: 'Backend · API',
-    year: '2025',
-    image: null, // e.g. '/images/acquisitions.png'
-    blurb:
-      'A production-grade REST API for managing business acquisitions, with enterprise patterns and a fully automated pipeline.',
-    detail:
-      'Handles acquisition workflows end to end. JWT auth with bcrypt hashing and role-based access; data access through Drizzle ORM against serverless PostgreSQL with automated migrations. Security via Helmet, CORS and Zod validation. Structured logging with Winston and Morgan, tests with Jest and Supertest, containerised with Docker and deployed through GitHub Actions.',
-    stack: [
-      'Node.js',
-      'Express',
-      'TypeScript',
-      'PostgreSQL',
-      'Drizzle',
-      'Docker',
-      'GitHub Actions',
-      'Jest',
-    ],
-    link: 'https://github.com/AtumaDavid', // ← exact repo URL
-    linkLabel: 'View on GitHub',
-  },
-  {
-    id: 'kumasi-visa',
-    title: 'Kumasi Visa',
-    kind: 'Frontend · Freelance',
-    year: '2022',
-    image: null,
-    blurb:
-      'A responsive web app guiding users through how to apply for different visa types.',
-    detail:
-      'Built a clean, user-friendly interface so visitors could navigate visa requirements and application steps with ease. Delivered with a project manager and designer.',
-    stack: ['Bootstrap Studio', 'HTML', 'CSS', 'JavaScript'],
-    link: null,
-  },
-  {
-    id: 'quiz-system',
-    title: 'Quiz System',
-    kind: 'Frontend · Early build',
-    year: '2022',
-    image: null,
-    blurb: 'An interactive quiz application with a secure login layer.',
-    detail:
-      'Built a quiz engine in vanilla JavaScript and a secure login system in PHP with XAMPP, keeping user data confidential while learning production patterns alongside a senior developer.',
-    stack: ['JavaScript', 'PHP', 'XAMPP'],
-    link: null,
-  },
-];
-
+// Toolbox drawers on the About section. `emoji` labels each drawer tab.
 export const stack = [
   {
     group: 'Languages',
+    emoji: '🔤',
     items: ['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL', 'Solidity'],
   },
   {
     group: 'Frontend',
+    emoji: '🎨',
     items: [
       'React',
       'Next.js',
@@ -304,6 +326,7 @@ export const stack = [
   },
   {
     group: 'Backend',
+    emoji: '⚙️',
     items: [
       'Node.js',
       'Express',
@@ -316,26 +339,36 @@ export const stack = [
   },
   {
     group: 'Data',
+    emoji: '🗄️',
     items: ['PostgreSQL', 'MongoDB', 'MySQL', 'AWS RDS', 'Neon'],
   },
   {
     group: 'Cloud & DevOps',
+    emoji: '☁️',
     items: ['AWS EC2 / S3', 'Docker', 'Nginx', 'CI/CD', 'PM2', 'Certbot'],
   },
   {
     group: 'CMS & No-Code',
+    emoji: '🧩',
     items: [
       'WordPress',
       'Shopify',
       'Wix',
       'Google Sites',
+      'Carrd',
       'HTML',
       'CSS',
       'SEO',
     ],
   },
   {
+    group: 'Product & Delivery',
+    emoji: '🧭',
+    items: ['Product management', 'Project management', 'Agile / Scrum', 'Lean', 'Team leadership'],
+  },
+  {
     group: 'Tooling',
+    emoji: '🔧',
     items: ['Git', 'Postman', 'Jest', 'Playwright', 'Firebase'],
   },
 ];

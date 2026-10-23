@@ -1,0 +1,315 @@
+/* Reusable pieces: surfaces, stickers, colour fills, buttons, motion
+   helpers, scroll areas, nav links and forms */
+
+/* ── Surfaces ── */
+.card {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+/* ── Stickers, pills, badges ── */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--pill);
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  border: 1.5px solid var(--on-color);
+  box-shadow: 2px 3px 0 var(--on-color);
+  color: var(--on-color);
+  background: var(--card);
+}
+[data-theme='dark'] .sticker {
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+.sticker.plain {
+  color: var(--text);
+}
+/* Keeps the ink outline in both themes (for stickers on coloured panels) */
+.sticker.inked,
+[data-theme='dark'] .sticker.inked {
+  border-color: var(--on-color);
+  box-shadow: 2px 3px 0 var(--on-color);
+  color: var(--on-color);
+}
+.sticker.inked:not([class*='fill-']) {
+  background: var(--cream);
+}
+.pill {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--pill);
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  color: var(--text-2);
+}
+.fill-green .pill,
+.fill-coral .pill,
+.fill-butter .pill,
+.fill-sky .pill {
+  background: rgba(15, 27, 45, 0.1);
+  color: var(--on-color);
+}
+
+/* Colour-fill helpers; text on them is always ink.
+   Declared after .sticker/.pill so a fill wins over their defaults. */
+.fill-green,
+.fill-coral,
+.fill-butter,
+.fill-sky {
+  color: var(--on-color);
+}
+.fill-green {
+  background: var(--green);
+}
+.fill-coral {
+  background: var(--coral);
+}
+.fill-butter {
+  background: var(--butter);
+}
+.fill-sky {
+  background: var(--sky);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: var(--pill);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.7rem 1.5rem;
+  transition:
+    transform 0.3s var(--bounce),
+    box-shadow 0.3s var(--ease),
+    background-color 0.2s;
+  text-decoration: none;
+}
+.btn:hover {
+  transform: translateY(-3px);
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn-primary {
+  background: var(--green);
+  color: var(--on-color);
+  border-color: var(--on-color);
+  box-shadow: 3px 4px 0 var(--on-color);
+}
+.btn-primary:hover {
+  box-shadow: 4px 6px 0 var(--on-color);
+}
+[data-theme='dark'] .btn-primary {
+  border-color: transparent;
+  box-shadow: 0 10px 30px -10px rgba(46, 224, 134, 0.6);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--text);
+}
+.btn-ghost:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+.btn-sm {
+  min-height: 40px;
+  padding: 0.45rem 1.05rem;
+  font-size: 0.88rem;
+  box-shadow: 2px 3px 0 var(--on-color);
+}
+.link {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  display: inline-block;
+  padding: 0.7rem 0.1rem;
+  margin: -0.7rem 0;
+}
+
+/* ── Motion helpers (all switched off under reduced motion) ── */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--rot, 0deg));
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg));
+  }
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) - 6deg));
+  }
+  75% {
+    transform: rotate(calc(var(--rot, 0deg) + 6deg));
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.wiggle-hover:hover {
+  animation: wiggle 0.5s ease-in-out 1;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+  }
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* ── Custom scrollbars (for scrollable modal areas) ── */
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+}
+.scroll-area::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 6px;
+}
+.scroll-area::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: var(--pill);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ── Nav ── */
+.nav-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-2);
+  min-height: 44px;
+  padding: 0.5rem 0.2rem;
+  transition: color 0.2s;
+}
+.nav-link:hover {
+  color: var(--text);
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 44px;
+  font-weight: 600;
+  color: inherit;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.social-link:hover {
+  opacity: 1;
+}
+
+/* ── Forms: calm, plain, clearly labelled ── */
+.field {
+  width: 100%;
+  background: var(--bg);
+  border: 1.5px solid var(--line-2);
+  border-radius: var(--r-sm);
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.field::placeholder {
+  color: var(--text-3);
+}
+textarea.field {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.seg {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: var(--pill);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  position: relative;
+}
+.seg button {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0.6rem 1.1rem;
+  min-height: 44px;
+  border-radius: var(--pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: color 0.25s;
+}
+.seg button[aria-pressed='true'] {
+  color: var(--on-color);
+}
+
+/* Form labels (calm, plain, clearly labelled) */
+.field-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+.form-error {
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+}

@@ -1,19 +1,49 @@
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useLenisCtx } from '../lib/lenis';
+import { useLenisCtx } from '../../context/lenis';
+import MorphBlob from '../decor/MorphBlob';
 
-// Enlargement modal. With `layoutId` it morphs from a card; without it,
-// it scales in. `scroll` wraps children in an internal scroll area.
+const BLOOM = { type: 'spring', stiffness: 160, damping: 18 };
+// Opening: the panel starts as a round blob and springs into a card.
+const OPEN = {
+  initial: { opacity: 0, scale: 0.6, y: 60, rotate: -6, borderRadius: 240 },
+  animate: { opacity: 1, scale: 1, y: 0, rotate: 0, borderRadius: 28 },
+  exit: { opacity: 0, scale: 0.85, y: 40, rotate: 4, borderRadius: 120, transition: { duration: 0.25, ease: [0.4, 0, 1, 1] } },
+};
+const OPEN_REDUCED = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, borderRadius: 28 },
+  exit: { opacity: 0 },
+};
+
+// Stagger helper for modal contents: wrap blocks in <motion.div variants={modalItem}>.
+export const modalItem = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } },
+};
+export const modalList = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06, delayChildren: 0.18 } },
+};
+
+// Shared shell for every modal on the site. With `layoutId` it morphs out of
+// the card that opened it; otherwise it blooms open from a blob.
+// `header` sits above the scroll area and stays put while content scrolls.
 export default function Modal({
   layoutId,
   onClose,
   children,
+  header = null,
   maxWidth = 680,
+  height,
   scroll = true,
   hideClose = false,
+  blob = 'var(--green)',
+  label,
 }) {
   const lenis = useLenisCtx();
+  const reduce = useReducedMotion();
   useEffect(() => {
     lenis?.stop();
     const onKey = (e) => e.key === 'Escape' && onClose();
@@ -24,107 +54,86 @@ export default function Modal({
     };
   }, []);
 
-  const panelMotion = layoutId
-    ? { layoutId }
-    : {
-        initial: { opacity: 0, scale: 0.92, y: 26 },
-        animate: { opacity: 1, scale: 1, y: 0 },
-        exit: { opacity: 0, scale: 0.95, y: 14 },
-      };
+  const panelMotion = layoutId ? { layoutId, style: { borderRadius: 28 } } : reduce ? OPEN_REDUCED : OPEN;
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={label}
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 1000,
+        zIndex: 1500,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 'clamp(1rem,4vw,2.5rem)',
+        padding: 'clamp(0.75rem,4vw,2.5rem)',
       }}
     >
       <motion.div
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35 }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'color-mix(in srgb, var(--bg) 50%, transparent)',
-          backdropFilter: 'blur(22px) saturate(160%)',
-          WebkitBackdropFilter: 'blur(22px) saturate(160%)',
-        }}
+        exit={{ opacity: 0, transition: { duration: 0.25 } }}
+        transition={{ duration: 0.3 }}
+        className="modal-backdrop"
       />
+      {/* Colour bloom behind the panel */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ scale: 0, rotate: -40 }}
+        animate={{ scale: 1, rotate: 0 }}
+        exit={{ scale: 0, transition: { duration: 0.25 } }}
+        transition={BLOOM}
+        style={{ position: 'absolute', width: 'min(900px, 120vw)', aspectRatio: '1', pointerEvents: 'none' }}
+      >
+        <MorphBlob size="100%" color={`color-mix(in srgb, ${blob} 30%, transparent)`} duration={10} style={{ inset: 0 }} />
+      </motion.div>
+
       <motion.div
         {...panelMotion}
-        transition={{ type: 'spring', stiffness: 240, damping: 28 }}
-        className="glass"
+        transition={{ type: 'spring', stiffness: 230, damping: 20 }}
+        className="modal-panel"
         style={{
-          position: 'relative',
+          ...(panelMotion.style || {}),
           width: `min(${maxWidth}px, 100%)`,
-          maxHeight: '88vh',
-          borderRadius: 28,
-          display: 'flex',
-          flexDirection: 'column',
+          height,
+          maxHeight: '90vh',
         }}
       >
         {!hideClose && (
-          <button
+          <motion.button
             onClick={onClose}
             aria-label="Close"
-            style={{
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              zIndex: 10,
-              width: 38,
-              height: 38,
-              borderRadius: '50%',
-              border: 'none',
-              cursor: 'pointer',
-              background: 'color-mix(in srgb, var(--text) 82%, transparent)',
-              color: 'var(--bg)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backdropFilter: 'blur(8px)',
-            }}
+            className="modal-close"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            whileHover={{ rotate: 90, scale: 1.08 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.15 }}
           >
-            <X size={18} />
-          </button>
+            <X size={19} strokeWidth={2.6} />
+          </motion.button>
         )}
+        {header}
         {scroll ? (
-          <div
-            style={{
-              overflowY: 'auto',
-              overflowX: 'hidden',
-              overscrollBehavior: 'contain',
-              WebkitOverflowScrolling: 'touch',
-              flex: 1,
-              minHeight: 0,
-              borderRadius: 28,
-            }}
-          >
+          <div data-lenis-prevent className="scroll-area modal-scroll">
             {children}
           </div>
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              minHeight: 0,
-              borderRadius: 28,
-              overflow: 'hidden',
-            }}
-          >
-            {children}
-          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>{children}</div>
         )}
       </motion.div>
+    </div>
+  );
+}
+
+// Coloured header band used at the top of modals.
+export function ModalHeader({ fill = 'fill-green', children, style = {} }) {
+  return (
+    <div className={`modal-head ${fill}`} style={style}>
+      {children}
     </div>
   );
 }

@@ -5,29 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Atuma David — Software Engineer. Full-stack systems, APIs and cloud infrastructure."
+      content="Atuma David is a full-stack software engineer in Lagos building web apps, APIs and cloud infrastructure. Book a call or grab the CV."
     />
-    <meta name="theme-color" content="#000000" />
-    <title>Atuma David</title>
+    <meta name="theme-color" content="#FFF8F2" />
+    <meta name="author" content="Atuma David" />
+    <title>Atuma David · Full-stack Software Engineer</title>
+
+    <!-- Icons & app manifest -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/src/assets/svg/brand/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Atuma David" />
+
+    <!-- Link previews (LinkedIn, X, WhatsApp, Slack…). %SITE_URL% is filled
+         in at build time; see vite.config.js. -->
+    <link rel="canonical" href="%SITE_URL%/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Atuma David" />
+    <meta property="og:title" content="Atuma David · I build software you can count on" />
+    <meta property="og:description" content="Full-stack software engineer in Lagos. Web apps, APIs, cloud and product delivery. Book a call or grab the CV." />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:image" content="%SITE_URL%/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Atuma David: I build software you can count on. Full-stack software engineer in Lagos." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Atuma David · I build software you can count on" />
+    <meta name="twitter:description" content="Full-stack software engineer in Lagos. Web apps, APIs, cloud and product delivery." />
+    <meta name="twitter:image" content="%SITE_URL%/og-image.png" />
+
+    <!-- Structured data so search engines know who this site is about -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Atuma David",
+        "jobTitle": "Full-stack Software Engineer",
+        "url": "%SITE_URL%/",
+        "image": "%SITE_URL%/og-image.png",
+        "email": "mailto:atumadavid35@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Lagos", "addressCountry": "NG" },
+        "worksFor": { "@type": "Organization", "name": "Shecluded", "url": "https://shecluded.com/" },
+        "sameAs": ["https://github.com/AtumaDavid"]
+      }
+    </script>
     <script>
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          if (!t) t = 'dark';
+          if (!t)
+            t = matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
           document.documentElement.setAttribute('data-theme', t);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', 'light');
         }
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Caveat:wght@500..700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <noscript>
+      <p style="font-family: sans-serif; padding: 2rem">
+        Hi, I'm Atuma David, a full-stack software engineer in Lagos. This site
+        needs JavaScript, but you can always reach me at
+        <a href="mailto:atumadavid35@gmail.com">atumadavid35@gmail.com</a>.
+      </p>
+    </noscript>
     <div id="root"></div>
 
     <script type="module" src="/src/main.jsx"></script>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#0f1b2d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- "APIs & backends": two stacked servers -->
+  <rect x="6" y="10" width="44" height="14" rx="5" fill="#fff8f2"/>
+  <rect x="6" y="32" width="44" height="14" rx="5" fill="#fff8f2"/>
+  <circle cx="14" cy="17" r="2" fill="#0f1b2d"/>
+  <circle cx="14" cy="39" r="2" fill="#0f1b2d"/>
+  <path d="M24 17h18M24 39h12"/>
+</svg>

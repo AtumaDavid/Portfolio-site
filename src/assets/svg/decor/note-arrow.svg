@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="38" viewBox="0 0 52 38" fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Hand-drawn arrow next to handwritten notes. Used as a CSS mask, so the
+       colour comes from the page (see components/ui/Note.jsx). -->
+  <path d="M3 5c14-4 30 0 36 10s2 16 0 19"/>
+  <path d="m32 28 7 7 6-8"/>
+</svg>

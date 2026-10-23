@@ -1,0 +1,162 @@
+/* Reset, page defaults and typography */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip; /* animated elements may start off-canvas */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition:
+    background-color 0.4s var(--ease),
+    color 0.4s var(--ease);
+}
+body.locked {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font-family: inherit;
+  color: inherit;
+}
+::selection {
+  background: var(--green);
+  color: var(--on-color);
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+.headline {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+.h2 {
+  font-size: clamp(2.3rem, 6vw, 4rem);
+  margin-bottom: 0.9rem;
+}
+.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  color: var(--text-2);
+  max-width: 52ch;
+}
+.label {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.muted {
+  color: var(--text-2);
+}
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 5vw, 2.5rem);
+}
+.section {
+  padding: clamp(4.5rem, 11vh, 8rem) 0;
+  position: relative;
+}
+.section-head {
+  margin-bottom: clamp(2.5rem, 6vh, 3.75rem);
+}
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Handwritten margin notes above headings */
+.note {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.15rem;
+  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-weight: 700;
+  font-size: clamp(1.45rem, 2.6vw, 1.8rem);
+  line-height: 1;
+  margin: 0 0 0.35rem 0.1rem;
+  transform-origin: 0% 100%;
+}
+.note-arrow {
+  flex-shrink: 0;
+  margin-top: 0.55em;
+}
+
+/* Marker highlight behind one word per heading */
+.mark {
+  position: relative;
+  white-space: nowrap;
+  z-index: 0;
+}
+.mark::before {
+  content: '';
+  position: absolute;
+  left: -0.12em;
+  right: -0.12em;
+  bottom: 0.06em;
+  height: 0.48em;
+  background: var(--green);
+  border-radius: 0.2em;
+  /* --mark is animated 0→1 by PopWords so the highlight swipes in */
+  transform: rotate(-1.5deg) scaleX(var(--mark, 1));
+  transform-origin: 0% 50%;
+  z-index: -1;
+}
+[data-theme='dark'] .mark::before {
+  opacity: 0.45;
+}
+
+/* Visually hidden but read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

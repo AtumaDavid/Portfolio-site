@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Moon } from 'lucide-react'
-import { useTheme } from '../lib/theme'
+import { useTheme } from '../../context/theme'
 
 export default function ThemeToggle() {
   const { theme, toggle } = useTheme()
@@ -11,7 +11,7 @@ export default function ThemeToggle() {
       whileTap={{ scale: 0.86 }}
       aria-label={dark ? 'Switch to light' : 'Switch to dark'}
       style={{
-        width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--line-2)',
+        width: 44, height: 44, borderRadius: '50%', border: '1.5px solid var(--line-2)',
         background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center',
         justifyContent: 'center', overflow: 'hidden', flexShrink: 0,
       }}
@@ -23,7 +23,7 @@ export default function ThemeToggle() {
           exit={{ y: -14, opacity: 0, rotate: 30 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           style={{ display: 'flex' }}>
-          {dark ? <Moon size={15} /> : <Sun size={15} />}
+          {dark ? <Moon size={18} /> : <Sun size={18} />}
         </motion.span>
       </AnimatePresence>
     </motion.button>

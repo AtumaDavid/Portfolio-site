@@ -1,8 +1,8 @@
 # Atuma David — Portfolio
 
-A single-page, scroll-driven portfolio in the spirit of Apple's product pages —
-true-black / clean-white themes, Liquid Glass surfaces, momentum scrolling, and
-fluid modal animations throughout.
+A playful, single-page portfolio: warm colour blocks, sticker-style UI,
+handwritten notes, morphing shapes and smooth, scroll-driven animation —
+in light and dark themes.
 
 ## Run it locally
 
@@ -16,48 +16,88 @@ Production build:
     npm run build
     npm run preview
 
-## What's inside
-
-- Dark / light theme (toggle in nav, remembers your choice)
-- Liquid Glass material on the nav, cards and modals
-- Mouse-reactive particle field in the hero + pointer glow on cards
-- Work & Projects open into enlarging glass modals (scrollable, custom scrollbars)
-- "Get in touch" → contact modal with a **message form** and an **appointment booker**
-  (adds the call to Google Calendar or downloads an .ics)
-- **View CV** → in-page PDF preview (open in new tab / download too)
-- **Link previews**: every external link opens a mini "preview" card first
-  (Open Graph image + domain) before opening in a new tab
-
 ## Edit your content — one file
 
-Everything reads from **src/lib/data.js**:
+Everything you'd normally change lives in **src/lib/data.js**:
 
-- profile — name, role, email, phone, social links, cvPath
-- work — companies + products (each product can have a live link)
-- projects — personal builds
-- stack, certifications, education
+- `profile` — name, contact details, links, CV path, photo, story, stickers
+- `services` and `steps` — the "What I do" cards and "How I work" steps
+- `work` — companies and the products shipped there (live links optional;
+  `shippedLabel` / `moreShipped` for work that can't be shown publicly)
+- `stack` — the toolbox drawers (each with an emoji), plus `certifications`
+  and `education`
+- `testimonials` — real quotes only; the section stays hidden while empty
 
-### Email sending
-By default the message form opens the visitor's mail app prefilled to you
-(mailto). To send in-page without leaving the site, create a free key at
-web3forms.com and set `profile.web3formsKey` in src/lib/data.js.
+### Your photo
 
-### Booking
-The booker builds a Google Calendar event (with you as guest) and an .ics file.
-To use Calendly instead, set `profile.calendlyUrl`.
+Drop it into `public/images/` and set `profile.photo` (e.g. `'/images/me.jpg'`).
+Until then the hero shows the "AD" monogram card.
+
+### Messages and bookings
+
+The message form sends in-page via web3forms when `profile.web3formsKey` is
+set, otherwise it opens the visitor's mail app. "Book a call" links to
+`profile.calendlyUrl`.
 
 ### CV
-Replace public/Atuma-David-CV.pdf with your own (keep the filename, or update
+
+Replace `public/Atuma-David-CV.pdf` (keep the filename, or update
 `profile.cvPath`).
 
-### Project / product images
-Optional. Drop files into public/images/ and set the `image` field; otherwise a
-tasteful placeholder shows.
+## Project structure
 
-## Notes
+    src/
+      App.jsx, main.jsx
+      assets/svg/   every SVG file the site uses (imported via src/lib/assets.js)
+        brand/      logo.svg — the "AD" mark, also the favicon
+        decor/      note-arrow, squiggle, ring, dot — single-colour shapes painted
+                    in theme colours via CSS masks (components/decor/MaskSvg.jsx)
+        services/   web, api, plan, cloud — the "What I do" illustrations
+      lib/          data.js (content), brand.js (colours for JS), assets.js (SVG imports),
+                    shapes.js (morphing shapes)
+      context/      app-wide providers: theme, intro, smooth scroll (lenis), modals (ui)
+      hooks/        useLocalTime, useMediaQuery
+      sections/     one file per page section: Hero, Facts, Work, Services, About,
+                    Testimonials, Contact
+      components/
+        ui/         reusable building blocks: Motion (Reveal, PopWords, Parallax,
+                    ScrollProgress), Note, SectionHeader, Logo, Toolbox
+        decor/      Squiggle/Dots/Ring, MaskSvg, MorphBlob, ServiceArt
+        modals/     Modal shell (+ ModalHeader), ContactModal, CVModal, PdfViewer
+        layout/     Nav, Intro (opening animation), ThemeToggle
+      styles/       tokens.css → base.css → components.css → sections.css → modals.css
 
-- Link previews use the free microlink.io API (100 req/day per IP, no key).
-- Smooth scrolling: lenis. Animation: framer-motion.
+To add an SVG, drop it in the right `src/assets/svg/` folder and import it in
+`src/lib/assets.js`; a missing file fails the build instead of showing a broken
+image. Shapes that morph while animating (the blobs and the intro sequence) aren't
+files: they're generated in `src/lib/shapes.js`.
+
+Design tokens (colours, radii, shadows, fonts) are CSS variables in
+`src/styles/tokens.css`; `src/lib/brand.js` mirrors the colours for places
+CSS variables can't reach (colour tweens, the intro, meta tags).
+
+## Motion
+
+Smooth scrolling uses Lenis; animation uses framer-motion. Everything —
+including the intro and smooth scrolling — switches off for visitors who
+prefer reduced motion. The intro plays once per browser session; to see it
+again run `sessionStorage.removeItem('introSeen')` in the console and reload.
+
+## Brand, icons & link previews
+
+- `src/assets/svg/brand/logo.svg` is the "AD" logo mark — the favicon, and the logo
+  in the nav/footer. `favicon.ico`, `apple-touch-icon.png` and the `icon-*.png`
+  files are rendered from it; `brand/icon-full-bleed.svg` is the
+  edge-to-edge version used for the Apple and maskable icons.
+- `public/og-image.png` is the 1200×630 image shown when the site is shared.
+  Its source is `brand/og-image.html`; to re-render after editing:
+
+      google-chrome --headless=new --hide-scrollbars --window-size=1200,630 \
+        --virtual-time-budget=8000 --screenshot=public/og-image.png brand/og-image.html
+
+- Set `SITE_URL` (e.g. `SITE_URL=https://yourdomain.com npm run build`) so link
+  previews use full URLs. Netlify and Vercel production builds fill it in
+  automatically.
 
 ---
 

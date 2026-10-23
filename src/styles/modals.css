@@ -1,0 +1,64 @@
+/* ── Modals: same sticker language as the page ── */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+[data-theme='dark'] .modal-backdrop {
+  background: rgba(4, 8, 16, 0.6);
+}
+.modal-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--card);
+  border: 2px solid var(--on-color);
+  box-shadow: 8px 10px 0 var(--on-color);
+}
+[data-theme='dark'] .modal-panel {
+  border-color: var(--line-2);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+.modal-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--on-color);
+  background: #fff8f2;
+  color: var(--on-color);
+  box-shadow: 2px 3px 0 var(--on-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-head {
+  position: relative;
+  flex-shrink: 0;
+  padding: clamp(1.4rem, 4.5vw, 2.2rem) clamp(1.4rem, 5vw, 2.5rem) clamp(1.2rem, 4vw, 1.8rem);
+  padding-right: 4.5rem;
+  border-bottom: 2px solid var(--on-color);
+  overflow: hidden;
+}
+.modal-head h2 {
+  font-size: clamp(1.9rem, 6vw, 2.8rem);
+  line-height: 1;
+}
+.modal-body {
+  padding: clamp(1.4rem, 5vw, 2.4rem);
+}

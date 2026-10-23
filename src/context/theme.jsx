@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { THEME_COLOR } from '../lib/brand'
 
 const ThemeCtx = createContext(null)
 
@@ -12,6 +13,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[theme])
     try { localStorage.setItem('theme', theme) } catch {}
   }, [theme])
 

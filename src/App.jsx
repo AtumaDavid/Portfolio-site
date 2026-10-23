@@ -1,30 +1,44 @@
-import { LenisProvider } from './lib/lenis';
-import { ThemeProvider } from './lib/theme';
-import { UIProvider } from './lib/ui';
-import Nav from './components/Nav';
+import { MotionConfig } from 'framer-motion';
+import { LenisProvider } from './context/lenis';
+import { ThemeProvider } from './context/theme';
+import { UIProvider } from './context/ui';
+import { IntroProvider } from './context/intro';
+import Intro from './components/layout/Intro';
+import Nav from './components/layout/Nav';
+import { ScrollProgress } from './components/ui/Motion';
 import Hero from './sections/Hero';
-import Intro from './sections/Intro';
+import Facts from './sections/Facts';
 import Work from './sections/Work';
-import Projects from './sections/Projects';
-import Stack from './sections/Stack';
+import Services from './sections/Services';
+import Process from './sections/Process';
+import About from './sections/About';
+import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 
 export default function App() {
   return (
     <ThemeProvider>
-      <LenisProvider>
-        <UIProvider>
-          <Nav />
-          <main>
-            <Hero />
-            <Intro />
-            <Work />
-            {/* <Projects /> */}
-            <Stack />
-            <Contact />
-          </main>
-        </UIProvider>
-      </LenisProvider>
+      <MotionConfig reducedMotion="user">
+        <LenisProvider>
+          <IntroProvider>
+            <UIProvider>
+              <ScrollProgress />
+              <Nav />
+              <main>
+                <Hero />
+                <Facts />
+                <Work />
+                <Services />
+              <Process />
+                <About />
+                <Testimonials />
+                <Contact />
+              </main>
+              <Intro />
+            </UIProvider>
+          </IntroProvider>
+        </LenisProvider>
+      </MotionConfig>
     </ThemeProvider>
   );
 }

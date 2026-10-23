@@ -1,2 +1,2 @@
-Drop project screenshots here, then reference them in src/lib/data.js
-e.g. image: '/images/shecluded.png'
+Drop your photo here (e.g. me.jpg), then set it in src/lib/data.js:
+profile.photo: '/images/me.jpg'

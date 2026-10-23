@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import ContactModal from '../components/ContactModal';
-import CVModal from '../components/CVModal';
+import ContactModal from '../components/modals/ContactModal';
+import CVModal from '../components/modals/CVModal';
 
 // const UICtx = createContext(null)
 const UICtx = createContext({

@@ -50,7 +50,7 @@ export default function PdfViewer({ url }) {
           canvas.width = viewport.width;
           canvas.height = viewport.height;
 
-          // Clear to transparent so the glass backdrop shows through
+          // Clear to transparent so the modal background shows through
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           await page.render({ canvasContext: ctx, viewport }).promise;
