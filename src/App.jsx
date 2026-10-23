@@ -1,4 +1,5 @@
 import { MotionConfig } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 import { LenisProvider } from './context/lenis';
 import { ThemeProvider } from './context/theme';
 import { UIProvider } from './context/ui';
@@ -39,6 +40,8 @@ export default function App() {
           </IntroProvider>
         </LenisProvider>
       </MotionConfig>
+      {/* Vercel Web Analytics: page views + visitors (only reports on Vercel deployments) */}
+      <Analytics />
     </ThemeProvider>
   );
 }
