@@ -59,21 +59,53 @@
 .float-card > * {
   transform: rotate(var(--rot, 0deg));
 }
-/* On small screens the floating cards stack and straighten */
-@media (max-width: 899px) {
-  .hero-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    justify-content: center;
-    margin-top: 1.4rem;
-  }
-  .float-card {
-    position: static;
-  }
-  .float-card > * {
-    transform: none;
-  }
+
+/* Phones: compact hero (Hero.jsx renders this layout below 900px) */
+.hero.hero--compact {
+  min-height: auto;
+  padding: 5.75rem 0 3rem;
+}
+.hero-id {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.4rem;
+}
+.hero-avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 84px;
+  z-index: 0;
+}
+.hero-avatar .hero-frame {
+  box-shadow: 3px 4px 0 var(--on-color);
+}
+[data-theme='dark'] .hero-avatar .hero-frame {
+  box-shadow: var(--shadow);
+}
+.hero-avatar .hero-backdrop {
+  inset: 8% -10% -8% 10%;
+  border-radius: 18px;
+}
+.hero-ctas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+.hero-ctas .btn {
+  padding-inline: 0.8rem;
+  font-size: 0.95rem;
+}
+.hero-facts {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.8rem;
+}
+.hero-facts .sticker {
+  font-size: 0.85rem;
+  padding: 0.42rem 0.8rem;
 }
 
 /* ── Grids ── */

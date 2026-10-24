@@ -1,25 +1,36 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar } from 'lucide-react';
+import { Calendar, Briefcase, Sparkles, Smile, Mail } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { useLenisCtx } from '../../context/lenis';
 import { useUI } from '../../context/ui';
+import { useIntro } from '../../context/intro';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useActiveSection } from '../../hooks/useActiveSection';
+import { useScrollDirection } from '../../hooks/useScrollDirection';
 import { profile } from '../../lib/data';
 import Logo from '../ui/Logo';
-import { COLORS } from '../../lib/brand';
 
+// One-page site: links jump to sections, and the current section is
+// highlighted as you scroll. `sections` lists which page sections count
+// as each link (e.g. the process road belongs to Services).
 const items = [
-  { label: 'Work', id: 'work' },
-  { label: 'Services', id: 'services' },
-  { label: 'About', id: 'about' },
-  { label: 'Contact', id: 'contact' },
+  { label: 'Work', id: 'work', icon: Briefcase, sections: ['work'] },
+  { label: 'Services', id: 'services', icon: Sparkles, sections: ['services', 'process'] },
+  { label: 'About', id: 'about', icon: Smile, sections: ['about', 'kind-words'] },
+  { label: 'Contact', id: 'contact', icon: Mail, sections: ['contact'] },
 ];
+const SECTIONS = Object.fromEntries(items.map((it) => [it.id, it.sections]));
+const SPRING = { type: 'spring', stiffness: 420, damping: 34 };
 
 export default function Nav() {
   const { scrollTo } = useLenisCtx();
   const { openContact } = useUI();
+  const { done } = useIntro();
+  const wide = useMediaQuery('(min-width: 860px)');
+  const active = useActiveSection(SECTIONS);
+  const dir = useScrollDirection();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,17 +39,16 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === 'Escape' && setOpen(false);
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
-
-  const jump = (id) => {
-    setOpen(false);
-    scrollTo(id);
-  };
+  const home = (
+    <button
+      onClick={() => scrollTo('top')}
+      className="display nav-home"
+      aria-label={`${profile.name}, back to top`}
+    >
+      <Logo size={30} />
+      {profile.name}
+    </button>
+  );
 
   return (
     <>
@@ -53,150 +63,81 @@ export default function Nav() {
           <motion.div
             animate={{ maxWidth: scrolled ? 860 : 1160 }}
             transition={{ type: 'spring', stiffness: 160, damping: 22 }}
-            style={{
-              margin: '0 auto',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1rem',
-              padding: '0.45rem 0.5rem 0.45rem 1.1rem',
-              borderRadius: 'var(--pill)',
-              background: scrolled ? 'color-mix(in srgb, var(--card) 88%, transparent)' : 'transparent',
-              backdropFilter: scrolled ? 'blur(16px) saturate(160%)' : 'none',
-              WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(160%)' : 'none',
-              boxShadow: scrolled ? 'var(--shadow)' : 'none',
-              border: `1.5px solid ${scrolled ? 'var(--line)' : 'transparent'}`,
-              transition: 'background 0.3s, box-shadow 0.3s, border-color 0.3s',
-            }}
+            className={`nav-bar ${scrolled ? 'is-scrolled' : ''}`}
           >
-            <button
-              onClick={() => jump('top')}
-              className="display"
-              aria-label={`${profile.name}, back to top`}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 800,
-                fontSize: '1.15rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                minHeight: 44,
-              }}
-            >
-              <Logo size={30} />
-              {profile.name}
-            </button>
-
-            <nav className="nav-d" aria-label="Main" style={{ display: 'flex', gap: '1.6rem', alignItems: 'center' }}>
-              {items.map((it) => (
-                <button key={it.id} onClick={() => jump(it.id)} className="nav-link">
-                  {it.label}
-                </button>
-              ))}
-              <ThemeToggle />
-              <button onClick={() => openContact('call')} className="btn btn-primary btn-sm">
-                <Calendar size={15} /> Book a call
-              </button>
-            </nav>
-
-            <div className="nav-m" style={{ display: 'none', alignItems: 'center', gap: '0.5rem' }}>
-              <ThemeToggle />
-              <button
-                onClick={() => setOpen((o) => !o)}
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: 'var(--text)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 5,
-                }}
-              >
-                {[0, 1].map((i) => (
-                  <motion.span
-                    key={i}
-                    animate={{ rotate: open ? (i === 0 ? 45 : -45) : 0, y: open ? (i === 0 ? 3.5 : -3.5) : 0 }}
-                    style={{ width: 18, height: 2, borderRadius: 2, background: 'var(--bg)', display: 'block' }}
-                  />
+            {home}
+            {wide ? (
+              <nav aria-label="Main" className="nav-links">
+                {items.map((it) => (
+                  <button
+                    key={it.id}
+                    onClick={() => scrollTo(it.id)}
+                    className={`nav-link ${active === it.id ? 'is-active' : ''}`}
+                    aria-current={active === it.id ? 'location' : undefined}
+                  >
+                    {active === it.id && <motion.span layoutId="nav-active" className="nav-link-pill" transition={SPRING} />}
+                    <span style={{ position: 'relative' }}>{it.label}</span>
+                  </button>
                 ))}
-              </button>
-            </div>
+                <ThemeToggle />
+                <button onClick={() => openContact('call')} className="btn btn-primary btn-sm">
+                  <Calendar size={15} /> Book a call
+                </button>
+              </nav>
+            ) : (
+              <ThemeToggle />
+            )}
           </motion.div>
         </div>
       </motion.header>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fill-green"
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 90,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              padding: '0 1.5rem',
-              gap: '0.3rem',
-            }}
-          >
-            {items.map((it, i) => (
+      {/* Phones: thumb-reachable tab bar. Tucks away while scrolling down. */}
+      {!wide && (
+        <AnimatePresence>
+          {done && (
+            <motion.nav
+              aria-label="Main"
+              className="dock"
+              initial={{ y: 120 }}
+              animate={{ y: dir === 'down' ? 120 : 0 }}
+              exit={{ y: 120 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              {items.slice(0, 2).map((it) => (
+                <DockItem key={it.id} it={it} active={active === it.id} onClick={() => scrollTo(it.id)} />
+              ))}
               <motion.button
-                key={it.id}
-                onClick={() => jump(it.id)}
-                initial={{ opacity: 0, y: 22, rotate: -3 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
-                transition={{ delay: 0.05 * i + 0.05, type: 'spring', stiffness: 300, damping: 20 }}
-                className="display"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  textAlign: 'left',
-                  padding: '0.6rem 0',
-                  cursor: 'pointer',
-                  fontSize: '2.6rem',
-                  fontWeight: 800,
-                  color: 'var(--on-color)',
-                }}
+                className="dock-cta"
+                onClick={() => openContact('call')}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Book a call"
               >
-                {it.label}
+                <Calendar size={22} strokeWidth={2.4} />
+                <span>Book</span>
               </motion.button>
-            ))}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} style={{ marginTop: '1.5rem' }}>
-              <button
-                onClick={() => {
-                  setOpen(false);
-                  openContact('call');
-                }}
-                className="btn"
-                style={{ background: 'var(--on-color)', color: COLORS.cream }}
-              >
-                <Calendar size={17} /> Book a call
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <style>{`
-        @media (max-width: 860px) {
-          .nav-d { display: none !important; }
-          .nav-m { display: flex !important; }
-        }
-      `}</style>
+              {items.slice(2).map((it) => (
+                <DockItem key={it.id} it={it} active={active === it.id} onClick={() => scrollTo(it.id)} />
+              ))}
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      )}
     </>
+  );
+}
+
+function DockItem({ it, active, onClick }) {
+  const Icon = it.icon;
+  return (
+    <motion.button
+      onClick={onClick}
+      className={`dock-item ${active ? 'is-active' : ''}`}
+      aria-current={active ? 'location' : undefined}
+      whileTap={{ scale: 0.9 }}
+    >
+      {active && <motion.span layoutId="dock-active" className="dock-pill" transition={SPRING} />}
+      <Icon size={20} strokeWidth={2.2} style={{ position: 'relative' }} />
+      <span style={{ position: 'relative' }}>{it.label}</span>
+    </motion.button>
   );
 }

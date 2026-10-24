@@ -21,6 +21,12 @@ const JELLY = [
   '70px 44px 96px 36px / 40px 96px 60px 70px',
   '32px 32px 32px 32px / 32px 32px 32px 32px',
 ];
+const JELLY_SM = [
+  '18px 18px 18px 18px / 18px 18px 18px 18px',
+  '34px 16px 28px 18px / 24px 32px 16px 36px',
+  '18px 36px 16px 30px / 36px 18px 30px 16px',
+  '18px 18px 18px 18px / 18px 18px 18px 18px',
+];
 const SOFT = { stiffness: 80, damping: 20, mass: 0.5 };
 
 export default function Hero() {
@@ -101,74 +107,179 @@ export default function Hero() {
   const wide = useMediaQuery('(min-width: 900px)');
   const w = (styles) => (reduce || !wide ? {} : styles);
 
+  // ── Shared pieces, arranged differently on desktop and phones ──
+  const greeting = (
+    <>
+      <motion.span
+        aria-hidden="true"
+        style={{ display: 'inline-block', transformOrigin: '70% 70%' }}
+        animate={reduce || !done ? undefined : { rotate: [0, 18, -8, 18, -4, 0] }}
+        transition={{ delay: 0.9, duration: 1.2, ease: 'easeInOut' }}
+      >
+        👋
+      </motion.span>{' '}
+      hey! I'm {profile.name}
+    </>
+  );
+
+  const headline = (fontSize) => (
+    <PopWords
+      as="h1"
+      play={done}
+      delay={0.3}
+      stagger={0.08}
+      text="I build software you can [count on.]"
+      className="headline"
+      style={{ fontSize, maxWidth: '13ch' }}
+    />
+  );
+
+  const lede = (style) => (
+    <motion.p {...rise(0.85)} className="lede" style={style}>
+      I'm a full-stack engineer in {profile.location.split(',')[0]}. I build web apps, APIs and the cloud setup
+      they run on, from first sketch to live and looked after.
+    </motion.p>
+  );
+
+  const ctas = (className, style) => (
+    <motion.div {...rise(1)} className={className} style={style}>
+      <motion.button
+        onClick={() => openContact('call')}
+        className="btn btn-primary"
+        whileHover={{ scale: 1.04, rotate: -2 }}
+        whileTap={{ scale: 0.94 }}
+      >
+        <Calendar size={18} /> Book a call
+      </motion.button>
+      <motion.button
+        onClick={() => scrollTo('work')}
+        className="btn btn-ghost"
+        whileHover={{ scale: 1.04, rotate: 2 }}
+        whileTap={{ scale: 0.94 }}
+      >
+        See my work{' '}
+        <motion.span
+          style={{ display: 'inline-flex' }}
+          animate={reduce ? undefined : { y: [0, 4, 0] }}
+          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut', delay: 2 }}
+        >
+          <ArrowDown size={17} />
+        </motion.span>
+      </motion.button>
+    </motion.div>
+  );
+
+  const cvLine = (
+    <motion.p {...rise(1.1)} className="muted" style={{ marginTop: '1.1rem', fontSize: '0.95rem' }}>
+      Hiring full-time?{' '}
+      <button className="link" onClick={openCV}>
+        Grab my CV
+      </button>
+    </motion.p>
+  );
+
+  // The photo card (monogram until a photo is set). frameRef is where the
+  // intro's flying card lands, whichever size it's shown at.
+  const portrait = (compact) => (
+    <>
+      <motion.div
+        style={{ position: 'absolute', inset: 0, zIndex: -1 }}
+        initial={fromIntro ? { scale: 0, rotate: -25 } : false}
+        animate={done ? { scale: 1, rotate: 0 } : undefined}
+        transition={{ delay: 0.55, type: 'spring', stiffness: 200, damping: 12 }}
+      >
+        <div className="hero-backdrop" />
+      </motion.div>
+      <motion.div ref={frameRef} initial={fromIntro ? { opacity: 0 } : false} animate={frame} style={{ position: 'relative', zIndex: 2 }}>
+        <motion.div
+          className="hero-frame"
+          animate={reduce || !done ? undefined : { borderRadius: compact ? JELLY_SM : JELLY }}
+          transition={{ delay: 1.2, duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ borderRadius: (compact ? JELLY_SM : JELLY)[0] }}
+        >
+          {profile.photo ? (
+            <img src={profile.photo} alt={`Photo of ${profile.name}`} width="440" height="550" fetchpriority="high" />
+          ) : (
+            <Monogram name={profile.name} compact={compact} />
+          )}
+        </motion.div>
+      </motion.div>
+    </>
+  );
+
+  const blob = (size, top, right) => (
+    <motion.div style={{ position: 'absolute', top, right, width: size, height: size, ...m({ rotate: blobRotate }) }}>
+      <MorphBlob size={size} color="color-mix(in srgb, var(--green) 14%, transparent)" style={{ inset: 0 }} />
+    </motion.div>
+  );
+
+  // ── Phones: compact, fits about one screen ──
+  if (!wide) {
+    return (
+      <section id="top" ref={ref} className="hero hero--compact">
+        {blob(340, -150, -170)}
+        <motion.div className="wrap" style={{ position: 'relative', width: '100%', ...m({ y: textY, opacity: textOpacity }) }}>
+          <div className="hero-id">
+            <motion.div
+              className="hero-avatar"
+              initial={fromIntro ? false : { opacity: 0, rotate: -12, scale: 0.6 }}
+              animate={{ opacity: 1, rotate: -4, scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring', stiffness: 160, damping: 12 }}
+            >
+              {portrait(true)}
+            </motion.div>
+            <div>
+              <Note play={done} delay={0.1} arrow={false} style={{ fontSize: '1.55rem', marginBottom: '0.55rem' }}>
+                {greeting}
+              </Note>
+              {profile.available && (
+                <motion.span {...pop(0.5)} className="sticker fill-green" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>
+                  <span aria-hidden="true">✓</span> Available for projects
+                </motion.span>
+              )}
+            </div>
+          </div>
+
+          {headline('clamp(2.5rem, 11.5vw, 3.6rem)')}
+          {lede({ marginTop: '1.1rem', fontSize: '1.05rem' })}
+          {ctas('hero-ctas', { marginTop: '1.6rem' })}
+          {cvLine}
+
+          <ul className="hero-facts">
+            {[
+              ['💼', `${current.role} @ ${current.company}`, 'plain'],
+              ['🧪', 'Biochem grad turned engineer', 'fill-butter'],
+              ['🕒', `${time} in Lagos`, 'fill-sky'],
+            ].map(([emoji, text, fill], i) => (
+              <motion.li
+                key={emoji}
+                initial={{ opacity: 0, scale: 0.3, rotate: -20 }}
+                animate={done ? { opacity: 1, scale: 1, rotate: [-2, 2.5, -1.5][i] } : undefined}
+                transition={{ delay: 1.2 + i * 0.12, type: 'spring', stiffness: 300, damping: 13 }}
+                className={`sticker ${fill}`}
+              >
+                <span aria-hidden="true">{emoji}</span> {text}
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      </section>
+    );
+  }
+
+  // ── Desktop ──
   return (
     <section id="top" ref={ref} className="hero" onPointerMove={onMove} onPointerLeave={onLeave}>
-      <motion.div style={{ position: 'absolute', top: -180, right: -200, width: 560, height: 560, ...m({ rotate: blobRotate }) }}>
-        <MorphBlob size={560} color="color-mix(in srgb, var(--green) 14%, transparent)" style={{ inset: 0 }} />
-      </motion.div>
+      {blob(560, -180, -200)}
       <div className="wrap hero-grid" style={{ position: 'relative', width: '100%' }}>
         <motion.div style={m({ y: textY, opacity: textOpacity })}>
           <Note play={done} delay={0.1} style={{ fontSize: 'clamp(1.6rem, 3vw, 2.1rem)', marginBottom: '0.6rem' }}>
-            <motion.span
-              aria-hidden="true"
-              style={{ display: 'inline-block', transformOrigin: '70% 70%' }}
-              animate={reduce || !done ? undefined : { rotate: [0, 18, -8, 18, -4, 0] }}
-              transition={{ delay: 0.9, duration: 1.2, ease: 'easeInOut' }}
-            >
-              👋
-            </motion.span>{' '}
-            hey! I'm {profile.name}
+            {greeting}
           </Note>
-
-          <PopWords
-            as="h1"
-            play={done}
-            delay={0.3}
-            stagger={0.08}
-            text="I build software you can [count on.]"
-            className="headline"
-            style={{ fontSize: 'clamp(2.9rem, 7.4vw, 5.4rem)', maxWidth: '13ch' }}
-          />
-
-          <motion.p {...rise(0.85)} className="lede" style={{ marginTop: '1.5rem', fontSize: 'clamp(1.1rem, 1.8vw, 1.3rem)' }}>
-            I'm a full-stack engineer in {profile.location.split(',')[0]}. I build web apps, APIs and the cloud setup
-            they run on, from first sketch to live and looked after.
-          </motion.p>
-
-          <motion.div
-            {...rise(1)}
-            style={{ display: 'flex', gap: '0.9rem', marginTop: '2.2rem', flexWrap: 'wrap', alignItems: 'center' }}
-          >
-            <motion.button
-              onClick={() => openContact('call')}
-              className="btn btn-primary"
-              whileHover={{ scale: 1.04, rotate: -2 }}
-              whileTap={{ scale: 0.94 }}
-            >
-              <Calendar size={18} /> Book a call
-            </motion.button>
-            <motion.button
-              onClick={() => scrollTo('work')}
-              className="btn btn-ghost"
-              whileHover={{ scale: 1.04, rotate: 2 }}
-              whileTap={{ scale: 0.94 }}
-            >
-              See my work{' '}
-              <motion.span
-                style={{ display: 'inline-flex' }}
-                animate={reduce ? undefined : { y: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut', delay: 2 }}
-              >
-                <ArrowDown size={17} />
-              </motion.span>
-            </motion.button>
-          </motion.div>
-          <motion.p {...rise(1.1)} className="muted" style={{ marginTop: '1.1rem', fontSize: '0.95rem' }}>
-            Hiring full-time?{' '}
-            <button className="link" onClick={openCV}>
-              Grab my CV
-            </button>
-          </motion.p>
+          {headline('clamp(2.9rem, 7.4vw, 5.4rem)')}
+          {lede({ marginTop: '1.5rem', fontSize: 'clamp(1.1rem, 1.8vw, 1.3rem)' })}
+          {ctas(undefined, { display: 'flex', gap: '0.9rem', marginTop: '2.2rem', flexWrap: 'wrap', alignItems: 'center' })}
+          {cvLine}
         </motion.div>
 
         <motion.div
@@ -179,28 +290,7 @@ export default function Hero() {
         >
           <motion.div style={w({ y: artY, rotate: artRotate, scale: artScale })}>
             <motion.div style={{ position: 'relative', zIndex: 0, transformPerspective: 900, ...m({ rotateX: tiltX, rotateY: tiltY }) }}>
-              <motion.div
-                style={{ position: 'absolute', inset: 0, zIndex: -1 }}
-                initial={fromIntro ? { scale: 0, rotate: -25 } : false}
-                animate={done ? { scale: 1, rotate: 0 } : undefined}
-                transition={{ delay: 0.55, type: 'spring', stiffness: 200, damping: 12 }}
-              >
-                <div className="hero-backdrop" />
-              </motion.div>
-              <motion.div ref={frameRef} initial={fromIntro ? { opacity: 0 } : false} animate={frame} style={{ position: 'relative', zIndex: 2 }}>
-                <motion.div
-                  className="hero-frame"
-                  animate={reduce || !done ? undefined : { borderRadius: JELLY }}
-                  transition={{ delay: 1.2, duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{ borderRadius: JELLY[0] }}
-                >
-                  {profile.photo ? (
-                    <img src={profile.photo} alt={`Photo of ${profile.name}`} width="440" height="550" fetchpriority="high" />
-                  ) : (
-                    <Monogram name={profile.name} />
-                  )}
-                </motion.div>
-              </motion.div>
+              {portrait(false)}
             </motion.div>
           </motion.div>
           <Ring size={44} color="var(--coral)" className="float" style={{ top: -22, left: -18 }} />
@@ -241,21 +331,9 @@ export default function Hero() {
   );
 }
 
-// Shown until a real photo is added in data.js
-function Monogram({ name }) {
+// `compact` is the small avatar version used on phones.
+function Monogram({ name, compact = false }) {
   const reduce = useReducedMotion();
-  // Hold every entrance until the opening sequence has handed over.
-  const { done, fromIntro, fromRect } = useIntro();
-  const rise = (delay) => ({
-    initial: { opacity: 0, y: 24 },
-    animate: done ? { opacity: 1, y: 0 } : undefined,
-    transition: { delay, duration: 0.9, ease: EASE },
-  });
-  const pop = (delay) => ({
-    initial: { opacity: 0, scale: 0.3, rotate: -20 },
-    animate: done ? { opacity: 1, scale: 1, rotate: 0 } : undefined,
-    transition: { delay, type: 'spring', stiffness: 300, damping: 13 },
-  });
   const initials = name
     .split(' ')
     .map((w) => w[0])
@@ -310,24 +388,31 @@ function Monogram({ name }) {
         initial={{ scale: 0.4, rotate: -15, opacity: 0 }}
         animate={{ scale: 1, rotate: 0, opacity: 1 }}
         transition={{ delay: 0.7, type: 'spring', stiffness: 220, damping: 11 }}
-        style={{ position: 'relative', fontSize: 'clamp(6rem, 18vw, 9rem)', fontWeight: 800, letterSpacing: '-0.06em' }}
+        style={{
+          position: 'relative',
+          fontSize: compact ? '2.4rem' : 'clamp(6rem, 18vw, 9rem)',
+          fontWeight: 800,
+          letterSpacing: '-0.06em',
+        }}
       >
         {initials}
       </motion.span>
-      <span
-        style={{
-          position: 'absolute',
-          bottom: 22,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          fontFamily: 'var(--mono)',
-          fontSize: '0.85rem',
-          fontWeight: 600,
-        }}
-      >
-        {'{ full-stack }'}
-      </span>
+      {!compact && (
+        <span
+          style={{
+            position: 'absolute',
+            bottom: 22,
+            left: 0,
+            right: 0,
+            textAlign: 'center',
+            fontFamily: 'var(--mono)',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+          }}
+        >
+          {'{ full-stack }'}
+        </span>
+      )}
     </div>
   );
 }

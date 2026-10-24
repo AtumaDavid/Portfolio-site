@@ -62,3 +62,38 @@
 .modal-body {
   padding: clamp(1.4rem, 5vw, 2.4rem);
 }
+
+/* Phones: bottom sheet */
+.modal-panel.is-sheet {
+  border-radius: 28px 28px 0 0;
+  border-bottom: none;
+  box-shadow: 0 -12px 40px -12px rgba(15, 27, 45, 0.45);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.sheet-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 26px;
+  z-index: 9;
+  display: flex;
+  justify-content: center;
+  padding-top: 9px;
+  cursor: grab;
+  touch-action: none;
+}
+.sheet-handle span {
+  width: 44px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--on-color);
+  opacity: 0.35;
+}
+[data-theme='dark'] .sheet-handle span {
+  background: var(--text);
+}
+/* Let a vertical swipe on the sheet's header drag it instead of scrolling */
+.modal-panel.is-sheet .modal-head {
+  touch-action: none;
+}
