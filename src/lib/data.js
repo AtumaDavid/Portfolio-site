@@ -261,7 +261,7 @@ export const work = [
     role: 'Frontend Developer · Contract',
     company: 'Shuttrd',
     site: null,
-    period: '2024 · Dubai',
+    period: '2024',
     mode: 'Remote',
     summary:
       'Built a performance-focused Next.js front end with a reusable component and hook library.',
